@@ -31,7 +31,17 @@ int main()
 	printf("int : %d\n", Min(a, b));	 // intの比較
 	printf("float : %f\n", Min(c, d));	 // float型の比較
 	printf("double : %lf\n", Min(e, f)); // double型の比較
-	printf("char : %c\n", Min(g, h));	 // char型の比較
+
+	// char型の文字か数字かわかりやすく
+	char result = Min(g, h);
+	if (result == std::numeric_limits<char>::min())
+	{
+		printf("chat : ???\n"); // エラー時は'???'を表示
+	}
+	else
+	{
+		printf("char : %c\n", result);	 // 正常時はchar型の比較結果を表示
+	}
 
 	return 0;
 }
