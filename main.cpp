@@ -25,7 +25,7 @@ int main()
 	int a = 32, b = 64;
 	float c = 3.14f, d = 2.78f;
 	double e = 6.39, f = 4.22;
-	char g = 'k', h = '1';
+	char g = '7', h = '4';
 
 	// Min関数呼び出し
 	printf("int : %d\n", Min(a, b));	 // intの比較
