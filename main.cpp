@@ -1,47 +1,45 @@
 #include <stdio.h>
-#include <limits>
-#include <ctype.h> // isdigitを使う
 
-// テンプレートの宣言
-template <typename T>
-// 比較関数（小さい方）
-T Min(T a, T b) { return (a < b) ? a : b; }
-
-// char型のテンプレートの特殊化
-template <> // テンプレートの解除
-char Min<char>(char a, char b)
+// 再帰的な賃金を計算する関数
+int RecursiveWages(int hour)
 {
-	// 文字が数字じゃないとき
-	if (!isdigit(a) || !isdigit(b))
+	if (hour == 1)
 	{
-		printf("数字以外は代入できません\n");
-		return std::numeric_limits<char>::min(); // エラーの場合のデフォルト値
+		return 100; // 最初の一時間の時給
 	}
-	return (a < b) ? a : b;
+	else
+	{
+		return RecursiveWages(hour - 1) * 2 - 50; // 再帰的に自給を計算
+	}
+}
+
+// 一般的な賃金体系を再帰的な賃金体系を比較する関数
+void CompareWages(int hours)
+{
+	int standardWage = 1072; // 一般的な賃金体系の時給
+	int totalStandard = 0;	 // 一般的な賃金の合計
+	int toralRecursive = 0;  // 再帰的な賃金の合計
+
+	for (int i = 1; i <= hours; i++)
+	{
+		// 一般的な賃金体系の合計
+		totalStandard += standardWage;
+
+		// 再帰的な賃金体系の合計
+		toralRecursive += RecursiveWages(i);
+
+		// 結果を出力
+		printf("時間 %d | 一般的な賃金の合計 : %d | 再帰的な賃金の合計 : %d\n", i, totalStandard, toralRecursive);
+	}
 }
 
 int main()
 {
-	int a = 32, b = 64;
-	float c = 3.14f, d = 2.78f;
-	double e = 6.39, f = 4.22;
-	char g = '7', h = '4';
+	// 働く時間
+	int hours = 8;
 
-	// Min関数呼び出し
-	printf("int : %d\n", Min(a, b));	 // intの比較
-	printf("float : %f\n", Min(c, d));	 // float型の比較
-	printf("double : %lf\n", Min(e, f)); // double型の比較
-
-	// char型の文字か数字かわかりやすく
-	char result = Min(g, h);
-	if (result == std::numeric_limits<char>::min())
-	{
-		printf("chat : ???\n"); // エラー時は'???'を表示
-	}
-	else
-	{
-		printf("char : %c\n", result);	 // 正常時はchar型の比較結果を表示
-	}
-
+	// 比較結果を表示
+	CompareWages(hours);
+	
 	return 0;
 }
