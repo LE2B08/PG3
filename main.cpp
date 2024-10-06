@@ -1,45 +1,59 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <Windows.h>
 
-// 再帰的な賃金を計算する関数
-int RecursiveWages(int hour)
+// コールバック関数
+typedef void (*PFunc)(int*);
+
+// サイコロの出目を表示するコールバック関数
+void DispDiceResult(int* result)
 {
-	if (hour == 1)
+	printf("結果は %d でした！\n", *result);
+}
+
+// 3秒待ってからコールバック関数を呼び出す
+void setTimeout(PFunc p, int second, int result)
+{
+	Sleep(second * 1000);
+	p(&result);
+}
+
+// サイコロの丁半
+void playGame()
+{
+	// サイコロの目をランダムに決定
+	srand((unsigned int)time(NULL));
+	int dice = rand() % 6 + 1; // 1から6の乱数を生成
+
+	// ユーザーに奇数か偶数かを入力させる
+	int guess;
+	printf("奇数か偶数か当ててください (1 : 奇数, 2 : 偶数): ");
+	scanf_s("%d", &guess);
+
+	// 丁半を判定する
+	int isEven = (dice % 2 == 0); // 偶数なら1、奇数なら0
+
+	// 3秒後に結果を表示する
+	printf("結果を判定中...\n");
+	setTimeout(DispDiceResult, 3, dice);
+
+	// 判定結果
+	if ((guess == 1 && !isEven) || (guess == 2 && isEven))
 	{
-		return 100; // 最初の一時間の時給
+		printf("正解です！\n");
 	}
 	else
 	{
-		return RecursiveWages(hour - 1) * 2 - 50; // 再帰的に自給を計算
+		printf("不正解です...\n");
 	}
-}
 
-// 一般的な賃金体系を再帰的な賃金体系を比較する関数
-void CompareWages(int hours)
-{
-	int standardWage = 1072; // 一般的な賃金体系の時給
-	int totalStandard = 0;	 // 一般的な賃金の合計
-	int toralRecursive = 0;  // 再帰的な賃金の合計
-
-	for (int i = 1; i <= hours; i++)
-	{
-		// 一般的な賃金体系の合計
-		totalStandard += standardWage;
-
-		// 再帰的な賃金体系の合計
-		toralRecursive += RecursiveWages(i);
-
-		// 結果を出力
-		printf("時間 %d | 一般的な賃金の合計 : %d | 再帰的な賃金の合計 : %d\n", i, totalStandard, toralRecursive);
-	}
 }
 
 int main()
 {
-	// 働く時間
-	int hours = 8;
+	printf("サイコロ丁半ゲームを始めます\n");
+	playGame();
 
-	// 比較結果を表示
-	CompareWages(hours);
-	
 	return 0;
 }
