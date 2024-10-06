@@ -1,45 +1,86 @@
 #include <stdio.h>
+#include <Windows.h>
 
-// 再帰的な賃金を計算する関数
-int RecursiveWages(int hour)
+// 関数ポインタ
+int addition(int a, int b)
 {
-	if (hour == 1)
-	{
-		return 100; // 最初の一時間の時給
-	}
-	else
-	{
-		return RecursiveWages(hour - 1) * 2 - 50; // 再帰的に自給を計算
-	}
+	return a + b;
+}
+int subtraction(int a, int b)
+{
+	return a - b;
+}
+int multiplication(int a, int b)
+{
+	return a * b;
+}
+int division(int a, int b)
+{
+	return a / b;
 }
 
-// 一般的な賃金体系を再帰的な賃金体系を比較する関数
-void CompareWages(int hours)
+// typedefで回避する
+typedef int (*newType)(int a);
+
+int twice(int a)
 {
-	int standardWage = 1072; // 一般的な賃金体系の時給
-	int totalStandard = 0;	 // 一般的な賃金の合計
-	int toralRecursive = 0;  // 再帰的な賃金の合計
+	return a * 2;
+}
 
-	for (int i = 1; i <= hours; i++)
-	{
-		// 一般的な賃金体系の合計
-		totalStandard += standardWage;
+int triple(int a)
+{
+	return a * 3;
+}
 
-		// 再帰的な賃金体系の合計
-		toralRecursive += RecursiveWages(i);
+// C++のコールバック関数
+typedef void (*PFunc)(int*);
 
-		// 結果を出力
-		printf("時間 %d | 一般的な賃金の合計 : %d | 再帰的な賃金の合計 : %d\n", i, totalStandard, toralRecursive);
-	}
+// コールバック関数
+void DispResult(int* s)
+{
+	printf("%d秒待って実行されたよ\n", *s);
+}
+
+void setTimeout(PFunc p, int second)
+{
+	// コールバック関数を呼び出す
+	Sleep(second * 1000);
+	p(&second);
 }
 
 int main()
 {
-	// 働く時間
-	int hours = 8;
+	/*int l = 33;
+	int h = 4;
 
-	// 比較結果を表示
-	CompareWages(hours);
-	
+	int (*funcArr[4])(int, int) =
+	{
+		addition,
+		subtraction,
+		multiplication,
+		division
+	};
+
+	for (int i = 0; i < 4; i++)
+	{
+		printf("%d\n", funcArr[i](l, h));
+	}*/
+
+	/*newType calc;
+
+	int h = 4;
+
+	calc = &twice;
+	printf("%d\n", calc(h));
+
+	calc = &triple;
+	printf("%d\n", calc(h));*/
+
+	printf("start\n");
+
+	PFunc p;
+	p = DispResult;
+	setTimeout(p, 5);
+
 	return 0;
 }
