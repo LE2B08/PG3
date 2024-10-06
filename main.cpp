@@ -47,7 +47,6 @@ void playGame()
 	{
 		printf("不正解です...\n");
 	}
-
 }
 
 int main()
