@@ -1,35 +1,49 @@
-#include <iostream>
-#include "MinValueClass.h"
+#include <vector>
+#include <memory>
 
-using namespace std;
+#include "Dog.h"
+#include "Cat.h"
+#include "HumanBaby.h"
 
 int main()
 {
-	/// ---------- 各型の組み合わせでインスタンスを生成し、Min()を呼び出す ---------- ///
-	
-	// int型の比較
-	MinValueClass<int, int> intInt(3, 7);
-	cout << "Min(int, int) : " << intInt.Min() << endl;
+	///// ========================================================
+	/////						autoを使う場合
+	///// ========================================================
 
-	// int型、float型の比較
-	MinValueClass<int, float> intFloat(4, 3.8518f);
-	cout << "Min(int, float) : " << intFloat.Min() << endl;
+	//// Animalポインタのベクターにインスタンスを格納
+	//std::vector<std::unique_ptr<Animal>> animals;
+	//animals.push_back(std::make_unique<Dog>());
+	//animals.push_back(std::make_unique<Cat>());
+	//animals.push_back(std::make_unique<HumanBaby>());
 
-	// int型、double型の比較
-	MinValueClass<int, double> intDouble(8, 7.795);
-	cout << "Min(double, double) : " << intDouble.Min() << endl;
+	//// 各動物の鳴き声を表示（ポリモーフィズムの実例）
+	//for (const auto& animal : animals)
+	//{
+	//	animal->MakeSound();
+	//}
 
-	// float型の比較
-	MinValueClass<float, float> floatFloat(5.695f, 5.8518f);
-	cout << "Min(float, float) : " << floatFloat.Min() << endl;
 
-	// float型、double型の比較
-	MinValueClass<float, double> floatDouble(9.865f, 9.851);
-	cout << "Min(double, double) : " << floatDouble.Min() << endl;
+	/// ========================================================
+	///					autoを使わない場合
+	/// ========================================================
 
-	// double型の比較
-	MinValueClass<double, double> doubleDouble(7.556, 8.851);
-	cout << "Min(double, double) : " << doubleDouble.Min() << endl;
+	// Animalポインタのベクターにインスタンスを格納
+	std::vector<std::unique_ptr<Animal>> animals;
+
+	// 明示的に unique_ptr<Animal> 型を指定
+	std::unique_ptr<Animal> dog = std::make_unique<Dog>();
+	std::unique_ptr<Animal> cat = std::make_unique<Cat>();
+	std::unique_ptr<Animal> humanbaby = std::make_unique<HumanBaby>();
+
+	animals.push_back(std::move(dog));
+	animals.push_back(std::move(cat));
+	animals.push_back(std::move(humanbaby));
+
+	// 各動物の鳴き声を表示（ポリモーフィズムの実例）
+	for (const std::unique_ptr<Animal>& animal : animals) {
+		animal->MakeSound();
+	}
 
 	return 0;
 }

@@ -131,12 +131,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animal.cpp" />
+    <ClCompile Include="Cat.cpp" />
+    <ClCompile Include="Dog.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="HumanBaby.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MinValueClass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animal.h" />
+    <ClInclude Include="Cat.h" />
+    <ClInclude Include="Dog.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="HumanBaby.h" />
     <ClInclude Include="MinValueClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
