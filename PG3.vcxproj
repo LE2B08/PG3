@@ -107,6 +107,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\k023g\Downloads\Gread2\PG3\PG3\Shapes;C:\Users\k023g\Downloads\Gread2\PG3\PG3\Animals;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\k023g\Downloads\Gread2\PG3\PG3\Shapes;C:\Users\k023g\Downloads\Gread2\PG3\PG3\Animals;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,21 +133,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animal.cpp" />
-    <ClCompile Include="Cat.cpp" />
-    <ClCompile Include="Dog.cpp" />
+    <ClCompile Include="Animals\Animal.cpp" />
+    <ClCompile Include="Animals\Cat.cpp" />
+    <ClCompile Include="Animals\Dog.cpp" />
+    <ClCompile Include="Animals\HumanBaby.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="HumanBaby.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MinValueClass.cpp" />
+    <ClCompile Include="Shapes\Circle.cpp" />
+    <ClCompile Include="Shapes\IShape.cpp" />
+    <ClCompile Include="Shapes\Rectangle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animal.h" />
-    <ClInclude Include="Cat.h" />
-    <ClInclude Include="Dog.h" />
+    <ClInclude Include="Animals\Animal.h" />
+    <ClInclude Include="Animals\Cat.h" />
+    <ClInclude Include="Animals\Dog.h" />
+    <ClInclude Include="Animals\HumanBaby.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="HumanBaby.h" />
     <ClInclude Include="MinValueClass.h" />
+    <ClInclude Include="Shapes\Circle.h" />
+    <ClInclude Include="Shapes\IShape.h" />
+    <ClInclude Include="Shapes\Rectangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

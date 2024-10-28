@@ -1,48 +1,24 @@
-#include <vector>
+#include "Circle.h"
+#include "Rectangle.h"
 #include <memory>
-
-#include "Dog.h"
-#include "Cat.h"
-#include "HumanBaby.h"
+#include <vector>
 
 int main()
 {
-	///// ========================================================
-	/////						autoを使う場合
-	///// ========================================================
+	// ベクターにインスタンスを格納
+	std::vector<std::unique_ptr<IShape>> shapes;
 
-	//// Animalポインタのベクターにインスタンスを格納
-	//std::vector<std::unique_ptr<Animal>> animals;
-	//animals.push_back(std::make_unique<Dog>());
-	//animals.push_back(std::make_unique<Cat>());
-	//animals.push_back(std::make_unique<HumanBaby>());
+	// 明示的に unique_ptr<IShpe>型を指定
+	std::unique_ptr<IShape> circle = std::make_unique<Circle>(5.0f);
+	std::unique_ptr<IShape> rectangle = std::make_unique<Rectangle>(6.0f, 12.0f);
 
-	//// 各動物の鳴き声を表示（ポリモーフィズムの実例）
-	//for (const auto& animal : animals)
-	//{
-	//	animal->MakeSound();
-	//}
+	shapes.push_back(std::move(circle));
+	shapes.push_back(std::move(rectangle));
 
-
-	/// ========================================================
-	///					autoを使わない場合
-	/// ========================================================
-
-	// Animalポインタのベクターにインスタンスを格納
-	std::vector<std::unique_ptr<Animal>> animals;
-
-	// 明示的に unique_ptr<Animal> 型を指定
-	std::unique_ptr<Animal> dog = std::make_unique<Dog>();
-	std::unique_ptr<Animal> cat = std::make_unique<Cat>();
-	std::unique_ptr<Animal> humanbaby = std::make_unique<HumanBaby>();
-
-	animals.push_back(std::move(dog));
-	animals.push_back(std::move(cat));
-	animals.push_back(std::move(humanbaby));
-
-	// 各動物の鳴き声を表示（ポリモーフィズムの実例）
-	for (const std::unique_ptr<Animal>& animal : animals) {
-		animal->MakeSound();
+	// 各図形を表示
+	for (const std::unique_ptr<IShape>& shape : shapes)
+	{
+		shape->Draw();
 	}
 
 	return 0;
