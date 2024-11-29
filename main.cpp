@@ -10,9 +10,11 @@ int main()
     StudentIDManager manager(input_filename, output_filename);
 
     // 学籍番号の処理
-    if (manager.loadStudentIDs()) {
+    if (manager.loadStudentIDs())
+    {
         manager.sortStudentIDs();
-        if (manager.saveSortedIDs()) {
+        if (manager.saveSortedIDs())
+        {
             manager.displaySortedIDs();
         }
     }
