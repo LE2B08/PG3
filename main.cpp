@@ -1,30 +1,74 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
 
+std::vector<std::vector<int>> map_data; // マップデータ
 std::mutex mtx;
 std::condition_variable cv;
-int current_thread = 1; // 現在のスレッド番号
+bool data_ready = false;
 
-void PrintThread(int id, const std::string& message)
-{
-    std::unique_lock<std::mutex> lock(mtx);
-    cv.wait(lock, [&]() { return current_thread == id; }); // 現在のスレッドが実行可能になるまで待機
-    std::cout << message << std::endl;
-    current_thread++; // 次のスレッドに進む
-    cv.notify_all();  // ほかのスレッドを通知
+// CSVを読み込む関数（バックグラウンドで実行）
+void loadCSV(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
+
+    std::vector<std::vector<int>> temp_data;
+    std::string line;
+
+    while (std::getline(file, line)) {
+        std::vector<int> row;
+        std::stringstream ss(line);
+        std::string cell;
+
+        while (std::getline(ss, cell, ',')) {
+            row.push_back(std::stoi(cell)); // 数値に変換
+        }
+        temp_data.push_back(row);
+    }
+
+    // 読み込み完了後にデータを共有
+    {
+        std::lock_guard<std::mutex> lock(mtx);
+        map_data = temp_data;
+        data_ready = true;
+    }
+    cv.notify_one(); // メインスレッドに通知
 }
 
-int main()
-{
-    std::thread t1(PrintThread, 1, "Thread1");
-    std::thread t2(PrintThread, 2, "Thread2");
-    std::thread t3(PrintThread, 3, "Thread3");
-   
-    t1.join();
-    t2.join();
-    t3.join();
+// マップチップを表示する関数
+void displayMap() {
+    std::unique_lock<std::mutex> lock(mtx);
+    cv.wait(lock, []() { return data_ready; }); // CSV読み込みが完了するまで待機
+
+    // マップデータを表示
+    for (const auto& row : map_data) {
+        for (const auto& cell : row) {
+            std::cout << cell << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+int main() {
+    // CSVファイル名
+    std::string filename = "map.csv";
+
+    // バックグラウンドでCSVを読み込むスレッドを開始
+    std::thread loader(loadCSV, filename);
+
+    // メインスレッドでマップを表示
+    displayMap();
+
+    // スレッドを結合
+    loader.join();
 
     return 0;
 }
