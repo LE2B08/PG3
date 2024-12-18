@@ -1,23 +1,30 @@
-#include "StudentIDManager.h"
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+std::mutex mtx;
+std::condition_variable cv;
+int current_thread = 1; // 現在のスレッド番号
+
+void PrintThread(int id, const std::string& message)
+{
+    std::unique_lock<std::mutex> lock(mtx);
+    cv.wait(lock, [&]() { return current_thread == id; }); // 現在のスレッドが実行可能になるまで待機
+    std::cout << message << std::endl;
+    current_thread++; // 次のスレッドに進む
+    cv.notify_all();  // ほかのスレッドを通知
+}
 
 int main()
 {
-    // 入力ファイルと出力ファイルの指定
-    const std::string input_filename = "student_ids.txt";
-    const std::string output_filename = "sorted_student_ids.txt";
-
-    // StudentIDManager のインスタンスを作成
-    StudentIDManager manager(input_filename, output_filename);
-
-    // 学籍番号の処理
-    if (manager.loadStudentIDs())
-    {
-        manager.sortStudentIDs();
-        if (manager.saveSortedIDs())
-        {
-            manager.displaySortedIDs();
-        }
-    }
+    std::thread t1(PrintThread, 1, "Thread1");
+    std::thread t2(PrintThread, 2, "Thread2");
+    std::thread t3(PrintThread, 3, "Thread3");
+   
+    t1.join();
+    t2.join();
+    t3.join();
 
     return 0;
 }
