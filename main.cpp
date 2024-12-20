@@ -12,7 +12,7 @@ void PrintThread(int id, const std::string& message)
     std::unique_lock<std::mutex> lock(mtx);
     cv.wait(lock, [&]() { return current_thread == id; }); // 現在のスレッドが実行可能になるまで待機
     std::cout << message << std::endl;
-    current_thread++; // 次のスレッドに進む
+    current_thread = (current_thread % 3) + 1; // 次のスレッドに進む (1, 2, 3の循環)
     cv.notify_all();  // ほかのスレッドを通知
 }
 
